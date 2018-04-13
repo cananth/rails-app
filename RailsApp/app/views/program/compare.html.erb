@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<body>		
+	
+			 <center>
+			<form class="color">
+				<table border=3 id="compareTable">
+					<tr>
+						<th id="c1">SYSTEM OUTPUT</th>
+						<th id="c1">USER OUTPUT</th>
+						<th id="c1">STATUS</th>
+					</tr>
+					<tr>
+						<td id="system"><%= @programhistory.system_output %></td>
+						<td id="user1"><%= @programhistory.output %></td>
+						<td id="status"><%= @programhistory.status %></td>
+					</tr>
+				</table>
+				 <button type="button" id="pop" onclick="goBack()">Cancel</button>
+			</form>
+			</center>
+			
+		
+
+</body>
+
+</html>

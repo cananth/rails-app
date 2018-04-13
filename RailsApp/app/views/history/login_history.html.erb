@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv = "content-style-type" content = "text/css"/>
+    <meta http-equiv = "content-script-type" content = "text/javascript"/>
+ </head>
+ <body>
+	 <div class="wrapper">
+		<div class="header">
+			<font class = "fc">Ruby</font>
+			<font class = "fd">Login History</font>
+			<div class="dropdown">
+					<button class="dropbtn" ><img class="header-img"src="<%= asset_path('guest.png' ) %>" /><a href = "/users/edit"><p id="user"><%= current_user.name %></p></a></button>
+					<div class="dropdown-content">
+						<%= link_to '#', :onclick =>'goBack()' do %>
+							<%= image_tag('back.jpg', class: "loghistory-img") %><pre id="log-his">Back</pre>
+						<% end %>
+						<%= link_to "index" do %>
+							<%= image_tag('home.png', class: "loghistory-img") %><pre id="log-his">Home</pre>
+						<% end %>
+						<%= link_to "/contact_us" do %>
+							<%= image_tag('contact.png', class: "loghistory-img") %><pre id="log-his">Contact</pre>
+						<% end %>
+						<%= link_to "/logout" do %>
+							<%= image_tag('logout.jpg', class: "loghistory-img") %><pre id="log-his">Logout</pre>
+						<% end %>
+						
+					</div>
+			</div>
+		</div>
+	
+	<div class ="content">
+	<center>
+		<table  border = 4>
+			<tr>
+				<th>SERIAL NUMBER</th>
+				<th>TIME</th>
+				<th>DATE</th>
+				<th>IP</th>
+			</tr>
+			<% index = 1 %>
+			<% @loginhistory.each do |row| %>
+				<tr>
+					<td><%= "#{index}" %></td>
+					<td><%= row['created_at'].localtime("+05:30").strftime("%I:%M %p") %></td>
+					<td><%= row['created_at'].to_date %></td>
+					<td><%= "#{row['ip_address']}" %></td>
+				</tr>
+				<% index = index + 1 %>
+		  <% end %>	
+		  </table>
+		<button id = "pdf" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Generate PDF</button>
+		<div id="id01" class="modal2">
+  
+  <form class="modal-content2 animate">
+   <a href = "/mail/mail_login_pdf/"><input type="radio" id="email" name="email" value="sendmail">Email the pdf<br></a>
+   <a href="/history/login_history_pdf"><input type="radio">Download the pdf</a></br> 
+   <button id="cancelform" type="button"  onclick="document.getElementById('id01').style.display='none';">Cancel</button> 
+  </form>
+	</div>		
+	</center>
+	<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>		
+	</center>
+	</div>
+    <div id="myModal" class="modal1">
+			<div class="modal-content">
+			<%= form_for :user, url: update_user_path,  method: "post", class:"modal-content animate" do |f| %>
+				<center><h>User Profile</h></center>
+				 Name:<%= f.text_field(:username) %><br/><br/>
+				 Email:<%= f.text_field(:email, :readonly => true) %><br/><br/>
+				<label>Address</label><br><%= f.text_area(:address, :id =>"address") %>
+				<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+				<%= javascript_include_tag('maps.js') %>
+				<div id="mapCanvas"></div>
+					<div id="infoPanel">
+						<div id="markerStatus"></div>
+					</div>
+				<textarea  placeholder="latlang" style = "display:none" readonly  id = "info" name="latitude"></textarea>
+				<button type="submit">Update</button> <button type="button" onclick="document.getElementById('myModal').style.display='none';">Cancel</button>
+			<% end %>
+		</div>
+</div>
+</div>
+<% flash.each do |key, value| %>
+        <div class="alert-<%= key %>"><%= value %></div>
+ <% end %>
+	
+		<div class="footer">
+			<p id="top">Ananth Kumar  Copyright©2017</p>
+			<br>
+			<p id="move"></p>
+				<div class="move-right">
+					<div id="move-top">
+						<%= link_to image_tag("facebook.png", size: "30x30"), "https://www.facebook.com/cananthkumar", target: :_blank %>
+						<%= link_to image_tag("googleplus.png", size: "30x30"), "https://plus.google.com/u/0/", target: :_blank %>
+						<%= link_to image_tag("linkendin.png", size: "30x30"), "https://www.linkedin.com/feed/", target: :_blank %>
+					</div>
+				</div>
+		</div>
+ </body>
+</html>

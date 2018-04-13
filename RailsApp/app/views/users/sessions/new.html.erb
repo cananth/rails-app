@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>LOGIN PAGE</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<META http-equiv="Content-Style-Type" content="text/css">
+		<meta http-equiv = "content-script-type" content = "text/javascript"/>
+	</head>
+	<body>
+		<%= csrf_meta_tags %>
+		<div class="wrapper">
+		
+			<div class="header">
+			<font class = "fc">Ruby</font>
+				<font class = "fd">Login</font>
+				<div class="dropdown">
+					<button class="dropbtn"><img class="button-image1" src="<%= asset_path('guest.png') %>"/><p id="user1">Guest</p></button>
+					<div class="dropdown-content">
+						<%= link_to "/index" do %>
+							<%= image_tag('home.png', class: "loghistory-img") %><pre id="log-his">Home</pre>
+						<% end %>
+					</div>
+				</div>
+			 </div>
+
+   <div class = "container">	
+		<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+			<div class="field">
+				<%= f.label :email %><br />
+					<%= f.email_field :email, autofocus: true %>
+			 </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end -%>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>
+</div>
+
+<div class="footer">
+			<p id="top">Ananth Kumar  Copyright©2017</p>
+			<br>
+			<p id="move"></p>
+				<div class="move-right">
+					<div id="move-top">
+						<%= link_to image_tag("facebook.png", size: "30x30"), "https://www.facebook.com/cananthkumar", target: :_blank %>
+						<%= link_to image_tag("googleplus.png", size: "30x30"), "https://plus.google.com/u/0/", target: :_blank %>
+						<%= link_to image_tag("linkendin.png", size: "30x30"), "https://www.linkedin.com/feed/", target: :_blank %>
+					</div>
+				</div>
+		</div>
+	</div>	
+</body>
+</html>	
+

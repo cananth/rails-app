@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>SIGNUP PAGE</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<META http-equiv="Content-Style-Type" content="text/css">
+		<meta http-equiv = "content-script-type" content = "text/javascript"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="header">
+			<font class = "fc">Ruby</font>
+			<font class = "fd">Sign Up</font>
+			<div class="dropdown">
+				<button class="dropbtn" ><img class="header-img"src="<%= asset_path('guest.png') %>"/><p id="user">Guest</p></button>
+				<div class="dropdown-content">
+					<%= link_to "index" do %>
+						<%= image_tag('home.png', class: "loghistory-img") %><pre id="log-his">Home</pre>
+					<% end %></div>
+			</div>
+		</div>
+			<div class = "container">	
+				<form id="form" action = "/user/user_signup/?">
+				<center>
+					<labeL id="label1">NAME</label></br> <input type="text" id="signup1" placeholder="Enter Username" name="username" ><br></br></br></br><span id ="id"><%= @user.errors.messages[:username].join if @user != nil  %></span></br></br></br>
+					<label id="label1">Email</label></br> <input type="text" placeholder="Enter Email" name = "email"  id="signup1"></br></br></br></br><span id= "id"><%= @user.errors.messages[:email].join if @user != nil %></span></br></br></br>
+				 <label id="label1">PASSWORD</label></br> <input type="password"  id="signup1" placeholder="Enter Password" name = "psw"></br></br></br></br><span id = "id" ><%= @user.errors.messages[:password].join if @user != nil %></span></br></br></br>
+		 <label id="label1">Confirm Password</label></br> <input type="password" id="signup1" placeholder="Confirm  Password" name = "cpsw"><br></br></br></br><!--<span id = "id">message</span></br></br></br>-->
+		 <label id="label1">Address</label><br> <textarea name = "address" id= "address"></textarea>
+		 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		 <%= javascript_include_tag('maps.js') %>
+					  <style>
+					  #mapCanvas {
+						width: 25%;
+						height: 200px;
+						float: right;
+						margin-top: -14%;
+						}
+					  #infoPanel {
+					    float: left;
+					    margin-left: 10px;
+					  }
+					  #infoPanel div {
+					    margin-bottom: 5px;
+					  }
+					  </style>
+						
+					  <div id="mapCanvas"></div>
+					  <div id="infoPanel">
+					    <div id="markerStatus"></div>
+                </div>
+					<textarea  placeholder="latlang" style = "display:none" readonly  id = "info" name="latitude"></textarea>
+					 <button type="submit" id="submit" onclick="check()">SignUp</button></a>	
+				</form>
+			<a href="loginPage"><button id="cancel" >cancel</button></a>
+		</center>
+			</div>
+			<% if params.has_key?("error") == true %>
+					 <p id="error" style = "color: red; font-size: 26px;"><%= params[:error] %></p>
+			<% end %>
+			
+		<div class="footer">
+			<p id="top">Ananth Kumar  Copyright©2017</p>
+			<br>
+			<p id="move"></p>
+				<div class="move-right">
+					<div id="move-top">
+						<%= link_to image_tag("facebook.png", size: "30x30"), "https://www.facebook.com/cananthkumar", target: :_blank %>
+						<%= link_to image_tag("googleplus.png", size: "30x30"), "https://plus.google.com/u/0/", target: :_blank %>
+						<%= link_to image_tag("linkendin.png", size: "30x30"), "https://www.linkedin.com/feed/", target: :_blank %>
+					</div>
+				</div>
+		</div>	
+</body>
+</html>

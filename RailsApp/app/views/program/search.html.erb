@@ -1,0 +1,3 @@
+<% @program_data.each do |row| %> 
+	<pre><%= link_to row.program_name, "/show/?id=#{row.id}", :id => "suggestion" %></pre>
+<% end %>

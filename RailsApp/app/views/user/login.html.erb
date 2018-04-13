@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>LOGIN PAGE</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<META http-equiv="Content-Style-Type" content="text/css">
+		<meta http-equiv = "content-script-type" content = "text/javascript"/>
+	</head>
+	<body>
+		<%= csrf_meta_tags %>
+		<div class="wrapper">
+		
+			<div class="header">
+			<font class = "fc">Ruby</font>
+				<font class = "fd">Login</font>
+				<div class="dropdown">
+					<button class="dropbtn"><img class="button-image1" src="<%= asset_path('guest.png') %>"/><p id="user1">Guest</p></button>
+					<div class="dropdown-content">
+						<%= link_to "index" do %>
+							<%= image_tag('home.png', class: "loghistory-img") %><pre id="log-his">Home</pre>
+						<% end %>
+					</div>
+				</div>
+			 </div>
+			<div class = "container">	
+				<form  id="form" action="/user/login_user/?" method="get">
+					
+				<center>
+					USERNAME: <input type="text" placeholder="Enter Username" name = "username" ></br></br><span id="log-msg"><%=  @user.errors.messages[:username].join if @user != false and @user != nil  %></span></br></br>
+					PASSWORD: <input type="password" placeholder="Enter Password" name = "psw" ></br></br><span id="log-msg"><%= @user.errors.messages[:password].join if @user != false and @user != nil  %></span></br></br>
+					<input type="hidden" name="input" value="<%= params[:input] %>" %>
+					<input type="hidden" name="output" value="<%= params[:output] %>" %>
+					<button id="login" type="submit">Login</button>
+				</form>
+				<a href="/signup"><button id="signup" type="submit">SignUp</button></a>
+				<% if @user == false %>
+					<table id="message"><td> <p style = "color: red; font-size: 26px;">Please, enter valid Username and Password!</p></td></table>
+				<% end %>
+				</center>
+				</div>
+		<div class="footer">
+			<p id="top">Ananth Kumar  Copyright©2017</p>
+			<br>
+			<p id="move"></p>
+				<div class="move-right">
+					<div id="move-top">
+						<%= link_to image_tag("facebook.png", size: "30x30"), "https://www.facebook.com/cananthkumar", target: :_blank %>
+						<%= link_to image_tag("googleplus.png", size: "30x30"), "https://plus.google.com/u/0/", target: :_blank %>
+						<%= link_to image_tag("linkendin.png", size: "30x30"), "https://www.linkedin.com/feed/", target: :_blank %>
+					</div>
+				</div>
+		</div>
+	</div>	
+</body>
+</html>	

@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: rails_db
+  username: postgres
+  password: postgres
+ 
+
+

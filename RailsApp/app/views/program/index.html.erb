@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+     <link href="http://mottie.github.io/tablesorter/css/theme.default.css" rel="stylesheet">
+    
+     <%= javascript_include_tag('jquery-latest.js') %>
+      <%= javascript_include_tag('jquery.tablesorter.js') %>
+		<script>
+			$(document).ready(function() { 
+    $("table").tablesorter({ 
+        // pass the headers argument and assing a object 
+        headers: { 0: {  sorter: false } } 
+         
+    }); 
+});
+
+  </script>	
+  </head>
+   <body>
+		<div class="header">
+			<font class = "fc">Ruby</font> 
+			<font class = "fd">List of Programs</font>
+			<div class="dropdown">
+				<% if current_user %>
+					<button class="dropbtn" type="button" ><%= link_to image_tag("guest.png", size: "30x30", class: "header-img" ) %><a href = "/users/edit"><p id="user"><%= current_user.name %></p></a></button>
+						<div class="dropdown-content">
+							<%= link_to "/login_history" do %>
+								<%= image_tag('history.jpg', class: "header-img2") %>LoginHistory(<%= current_user.sign_in_count %>)
+							<% end %>
+						
+							<%= link_to "/contact_us" do %>
+								<%= image_tag('contact.png', class: "header-img1") %><pre id="head_button"> Contact </pre>
+							<% end %>
+						
+							<%= link_to "/add_program" do %>
+								<%= image_tag('program.png', class: "header-img4") %><pre id="head_button">Add program</pre>
+							<% end %>
+							
+							<%= link_to "Sign out", destroy_user_session_path, :method => :delete, :id => "logout" %>
+								<%= image_tag('logout.jpg', class: "header-img2") %>
+						
+							
+						</div>
+				<% else %>
+					<button class="dropbtn"><%= link_to image_tag("guest.png", size: "30x30", class: "header-img" ) %><p id="user">Guest</p></button>
+					<div class="dropdown-content">
+						<%= link_to "/users/sign_in" do %>
+							<%= image_tag('login.png', class: "header-img2") %><pre id="head-button">Login</pre>
+						<% end %>
+						<%= link_to "/contact_us" do %>
+							<%= image_tag('contact.png', class: "header-img1") %><pre id="head-button">Contact</pre>
+						<% end %>
+						<%= link_to "/users/sign_up" do %>
+							<%= image_tag('signup.png', class: "header-img4") %><pre id="head-button">Signup</pre>
+						<% end %>
+						
+					</div>	
+				<% end %>
+			</div>
+		</div>
+	
+	<div class ="content">
+    <%= text_field_tag :search, params[:search], :onkeyup => "loadDoc(this.value)", :placeholder => "Search" %>
+  <div class ="txtHint"></div>
+
+	<center>
+		<table id = "results" border = 3>
+			<thead>
+			<tr>
+				<th>SERIAL NUMBER</th>
+				<th>PROGRAM NAME</th>
+				<th>ACTION</th>
+			</tr>
+			</thead>
+			<tbody>
+			<% if @program[0].offset.to_i.zero? or @program[0].offset.nil? %>
+				<% index = 1 %>
+			<% else %>
+				<% index = @program[0].offset.to_i + 1 %>
+			<% end %>	
+			<% @program.each do |row| %>
+			<tr>
+					<td><%= "#{index}" %></td>
+					<td><%= "#{row['program_name']}" %></td>
+					<td><%= button_to "Go To Program", :action => "show", :id => row['id'] %></td>
+			</tr>
+			<% index = index + 1 %>
+			<% end %>
+			</tbody>
+		</table>	
+		<div class="pagination">
+			<% if @program[0].offset.to_i.zero? or @program[0].offset.nil? %>
+			<% else %>
+				<a href="/prev/?offset=<%= @program[0].offset.to_i - 7 %>">&laquo;</a>
+			<% end %>
+			<a href="/firstpage?offset=<%= 0 %>">1</a>
+			<a href="/secondpage?offset=<%= 7 * 1 %>">2</a>
+			<a href="/thirdpage?offset=<%= 7 * 2 %>">3</a>
+			<a href="/forthpage?offset=<%= 7 * 3 %>">4</a>
+			
+			<a href="/next?offet=<%= @program[0].offset.to_i + 7 %>">&raquo;</a> 
+</div>
+		
+				
+	</center>
+	</div>
+<script>
+
+function loadDoc(str) {
+
+  var xhttp;    
+  if (str == "") {
+    document.getElementByClassName("txtHint").innerHTML = "";
+    return;
+  }
+  xhttp = new XMLHttpRequest();
+  
+  xhttp.onreadystatechange = function() {
+	 
+    if (this.readyState == 4 && this.status == 200) {
+		
+      document.getElementsByClassName("txtHint")[0].innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/program/search/?search="+str, true);
+  xhttp.send();
+}
+</script>
+
+
+
+ <% if current_user %>
+    <div id="myModal" class="modal">
+		<div class="modal-content">
+			<%= form_for :us, url: update_user_path,  method: "post", class:"modal-content animate" do |f| %>
+				<center><h>User Profile</h></center>
+				 Name:<%= f.text_field(:name) %><br/><br/>
+				 Email:<%= f.text_field(:email, :readonly => true) %><br/><br/>
+				<label>Address</label><br><%= f.text_area(:address, :id =>"address") %>
+				<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+				<%= javascript_include_tag('maps.js') %>
+				<div id="mapCanvas"></div>
+					<div id="infoPanel">
+						<div id="markerStatus"></div>
+					</div>
+				<textarea  placeholder="latlang" style = "display:none" readonly  id = "info" name="latitude"></textarea>
+				 <%= submit_tag("Submit") %><button type="button" onclick="document.getElementById('myModal').style.display='none';">Cancel</button>
+			<% end %>
+		</div>
+</div>
+<% end %>
+<% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+ <% end %>
+		<div class="footer">
+			<p id="top">Ananth Kumar  Copyright©2017</p>
+			<br>
+			<p id="move"></p>
+				<div class="move-right">
+					<div id="move-top">
+						<%= link_to image_tag("facebook.png", size: "30x30"), "https://www.facebook.com/cananthkumar", target: :_blank %>
+						<%= link_to image_tag("googleplus.png", size: "30x30"), "https://plus.google.com/u/0/", target: :_blank %>
+						<%= link_to image_tag("linkendin.png", size: "30x30"), "https://www.linkedin.com/feed/", target: :_blank %>
+					</div>
+				</div>
+		</div>
+ </body>
+</html>
